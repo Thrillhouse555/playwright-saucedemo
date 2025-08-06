@@ -3,9 +3,9 @@ import { log } from '../utils/logger';
 
 export class LoginPage {
   private page: Page;
-  private usernameField = '#user-name';
-  private passwordField = '#password';
-  private loginButton = '#login-button';
+  private usernameField = '[data-test="username"]';
+  private passwordField = '[data-test="password"]';
+  private loginButton = '[data-test="login-button"]';
   private errorMessage = '[data-test="error"]';
 
   constructor(page: Page) {
@@ -26,11 +26,16 @@ export class LoginPage {
 
   async assertLoginSuccess(): Promise<void> {
     await expect(this.page).toHaveURL(/inventory/);
+    const header = this.page.locator('[data-test="primary-header"]');
+    await expect(header).toContainText('Swag Labs');
     log('Login successful');
   }
 
-  async assertLoginError(): Promise<void> {
-    await expect(this.page.locator(this.errorMessage)).toBeVisible();
-    log('Login failed with error');
+  async assertLoginError(expectedMessage: string): Promise<void> {
+    const error = this.page.locator(this.errorMessage); 
+    await expect(error).toBeVisible();
+    await expect(error).toHaveText(expectedMessage);
+    log(`Login failed with expected error message: "${expectedMessage}"`);
   }
+  
 }
