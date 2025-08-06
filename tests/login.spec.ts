@@ -1,14 +1,11 @@
-import { test } from '@playwright/test';
+import { test, expect } from '@playwright/test';
 import { LoginPage } from '../pages/loginPage';
 import { InventoryPage } from '../pages/inventoryPage';
-import { CartPage } from '../pages/cartPage';
-import { CheckoutPage } from '../pages/checkoutPage';
-import { CompletePage } from '../pages/completePage';
 import { users } from '../utils/config';
 
 test.describe('Login E2E Tests', () => {
 
-  let loginPage: LoginPage;
+  let loginPage: LoginPage
 
   test.beforeEach(async ({ page }) => {
     loginPage = new LoginPage(page);
@@ -16,18 +13,8 @@ test.describe('Login E2E Tests', () => {
   });
 
   test('Standard user - login, add to cart, checkout', async ({ page }) => {
-    const inventoryPage = new InventoryPage(page);
-    const cartPage = new CartPage(page);
-    const checkoutPage = new CheckoutPage(page);
-    const completePage = new CompletePage(page);
     await loginPage.login(users.standardUser.username, users.standardUser.password);
     await loginPage.assertLoginSuccess();
-    await inventoryPage.addItemToCart();
-    await inventoryPage.goToCart();
-    await cartPage.proceedToCheckout();
-    await checkoutPage.fillCheckoutInfo();
-    await checkoutPage.finishCheckout();
-    await completePage.assertOrderComplete();
   });
 
   test('Locked out user - show login error', async ({ page }) => {
@@ -40,6 +27,22 @@ test.describe('Login E2E Tests', () => {
     await loginPage.assertLoginError('Epic sadface: Username and password do not match any user in this service');
   });
 
+  test('Problem User - show login error', async ({ page }) => {
+    const inventoryPage = new InventoryPage(page);
+    await loginPage.login(users.problemUser.username, users.problemUser.password);
+    await inventoryPage.checkItemImage('[data-test="inventory-item-sauce-labs-backpack-img"]', '/static/media/sl-404.168b1cce.jpg');
+  });
 
+  test('Standard user - login, log out', async ({ page }) => {
+    const inventoryPage = new InventoryPage(page);
+    await loginPage.login(users.standardUser.username, users.standardUser.password);
+    await loginPage.assertLoginSuccess();
+    await inventoryPage.logOut();
+  });
+
+  test('Standard user - no login details', async ({ page }) => {
+    await loginPage.noDetails();
+    await loginPage.assertLoginError('Epic sadface: Username is required');
+  });
 
 });

@@ -37,5 +37,9 @@ export class LoginPage {
     await expect(error).toHaveText(expectedMessage);
     log(`Login failed with expected error message: "${expectedMessage}"`);
   }
+
+  async noDetails(): Promise<void> {
+    await this.page.click(this.loginButton);
+  }
   
 }
