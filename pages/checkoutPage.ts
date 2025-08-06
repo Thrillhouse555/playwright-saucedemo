@@ -4,7 +4,7 @@ import { log } from '../utils/logger';
 export class CheckoutPage {
   private page: Page;
   private firstName = '[data-test="firstName"]';
-  private lastName = '[data-test="firstName"]';
+  private lastName = '[data-test="lastName"]';
   private postalCode = '[data-test="postalCode"]';
   private continueButton = '[data-test="continue"]';
   private finishButton = '[data-test="finish"]';

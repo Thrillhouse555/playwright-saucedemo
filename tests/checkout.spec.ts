@@ -15,7 +15,7 @@ test.describe('Checkout E2E Tests', () => {
     await loginPage.goto();
   });
 
-  test('Standard user - login, add to cart, checkout', async ({ page }) => {
+  test('Standard user - login, add to cart, checkout, then logout', async ({ page }) => {
     const inventoryPage = new InventoryPage(page);
     const cartPage = new CartPage(page);
     const checkoutPage = new CheckoutPage(page);
@@ -28,9 +28,10 @@ test.describe('Checkout E2E Tests', () => {
     await checkoutPage.fillCheckoutInfo();
     await checkoutPage.finishCheckout();
     await completePage.assertOrderComplete();
+    await completePage.logOut();
   });
 
-  test.only('Standard user - login, add to cart, remove from cart from inventory page', async ({ page }) => {
+  test('Standard user - login, add to cart, remove from cart from inventory page', async ({ page }) => {
     const inventoryPage = new InventoryPage(page);
     const cartPage = new CartPage(page);
     const checkoutPage = new CheckoutPage(page);
