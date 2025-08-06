@@ -30,11 +30,37 @@ test.describe('Checkout E2E Tests', () => {
     await completePage.assertOrderComplete();
   });
 
-  test('Standard user - login, add to cart, remove from cart', async ({ page }) => {
-    
+  test('Standard user - login, add to cart, remove from cart from inventory', async ({ page }) => {
+    const inventoryPage = new InventoryPage(page);
+    const cartPage = new CartPage(page);
+    const checkoutPage = new CheckoutPage(page);
+    const completePage = new CompletePage(page);
+    await loginPage.login(users.standardUser.username, users.standardUser.password);
+    await loginPage.assertLoginSuccess();
+    await inventoryPage.addItemToCart();
+    await inventoryPage.goToCart();
+    await cartPage.proceedToCheckout();
+    await checkoutPage.fillCheckoutInfo();
+    await checkoutPage.finishCheckout();
+    await completePage.assertOrderComplete();
   });
 
-  test('Standard user - login, add to cart, fail payment', async ({ page }) => {
+  test('Standard user - login, add to cart, remove from cart from cart', async ({ page }) => {
+    const inventoryPage = new InventoryPage(page);
+    const cartPage = new CartPage(page);
+    const checkoutPage = new CheckoutPage(page);
+    const completePage = new CompletePage(page);
+    await loginPage.login(users.standardUser.username, users.standardUser.password);
+    await loginPage.assertLoginSuccess();
+    await inventoryPage.addItemToCart();
+    await inventoryPage.goToCart();
+    await cartPage.proceedToCheckout();
+    await checkoutPage.fillCheckoutInfo();
+    await checkoutPage.finishCheckout();
+    await completePage.assertOrderComplete();
+  });
+
+  test('Standard user - login, add to cart, no payment details', async ({ page }) => {
     
   });
 
