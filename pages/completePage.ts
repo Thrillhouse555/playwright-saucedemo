@@ -3,7 +3,7 @@ import { log } from '../utils/logger';
 
 export class CompletePage {
   private page: Page;
-  private completeHeader = '.complete-header';
+  private completeHeader = '[data-test="title"]';
 
   constructor(page: Page) {
     this.page = page;
