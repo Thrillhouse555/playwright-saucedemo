@@ -39,7 +39,7 @@ test.describe('Checkout E2E Tests', () => {
     await loginPage.assertLoginSuccess();
     await inventoryPage.addItemToCart();
     await inventoryPage.checkCart('1');
-    await inventoryPage.addItemToCart();
+    await inventoryPage.removeItemToCart();
     await inventoryPage.checkCart('');
   });
 
